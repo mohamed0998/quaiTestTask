@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('reference');
             $table->string('name');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->dateTime('date');
             $table->timestamps();
         });

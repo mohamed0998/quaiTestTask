@@ -23,7 +23,6 @@ class CommandeSeeder extends Seeder
         [
             'reference'=>'Ref1DOU001',
             'name' =>'Commande 1',
-            'status'=>'0',
             'date'=>'2022-09-01 00:00'
             
 
@@ -31,14 +30,12 @@ class CommandeSeeder extends Seeder
         [
             'reference'=>'Ref1DOU002',
             'name' =>'Commande 2',
-            'status'=>'0',
             'date'=>'2022-09-01 00:00'
 
         ],
         [
             'reference'=>'Ref1DOU003',
-            'name' =>'Commande 2',
-            'status'=>'0',
+            'name' =>'Commande 3',
             'date'=>'2022-09-01 00:00'
 
         ],

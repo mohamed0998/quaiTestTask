@@ -8,9 +8,12 @@
   
     <div class="form-check form-switch">
       <input
+      v-model="Commande.status"
+      @change="changeStatus(Commande.id,Commande.name,Commande.date,'CheckCommande'+Commande.id)"
         class="form-check-input"
         type="checkbox"
-        id="flexSwitchCheckDefault"
+        :id="'CheckCommande'+Commande.id"
+        
       />
       <label class="form-check-label" for="flexSwitchCheckDefault">Fermé</label>
     </div>
@@ -67,7 +70,7 @@
                         <td><i class="fas fa-dollar-sign"></i>{{Service.price}}</td>
                         <td><i class="fas fa-dollar-sign"></i>{{Service.price}}</td>
                         <td>
-                          <button
+                          <button v-if="Commande.status==0"
                       @click="fillFieldEdit(Service.id,Service.name,Service.price,Service.quantity)"
                       class="btn btn-success"
                       style="color: white; border-radius: 20px"
@@ -90,9 +93,9 @@
                           d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                         />
                       </svg>
-                    </button>
+                    </button >
                         </td>
-                        <td>                    <button
+                        <td>                    <button v-if="Commande.status==0"
                       
                       class="btn btn-danger"
                       style="color: white; border-radius: 20px"
@@ -114,7 +117,7 @@
                   </table>
                 </div>
                             <div class="d-flex justify-content-center">
-                <button style="border-radius: 40px;" class="btn m-1" data-bs-toggle="modal" data-bs-target="#MyModalEdit"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <button  v-if="Commande.status==0" style="border-radius: 40px;" class="btn m-1" data-bs-toggle="modal" data-bs-target="#MyModalEdit"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 </svg></button>
@@ -142,12 +145,12 @@
                 <div class="row mt-2 mb-5">
                   <div class="col-10">
                     <p class="fw-bold">
-                      Date: <span class="text-muted">23/02/2021</span>
+                      Date: <span class="text-muted">{{commandeDate(Commande.date)}}</span>
                     </p>
                   </div>
                   <div class="col-1">
-                    <button
-                      @click="fillFieldEdit()"
+                    <button  v-if="Commande.status==0"
+                      @click="fillFieldEditCommande(Commande.id,Commande.name,Commande.date,Commande.status)"
                       class="btn btn-success"
                       style="color: white; border-radius: 20px"
                       data-bs-toggle="modal"
@@ -172,7 +175,7 @@
                     </button>
                   </div>
                   <div class="col-1">
-                    <button
+                    <button  v-if="Commande.status==0"
                       @click="onClickDelete(Commande.id)"
                       class="btn btn-danger"
                       style="color: white; border-radius: 20px"
@@ -202,6 +205,14 @@
     
     <hr>
   </div>
+                              <div class="d-flex justify-content-center">
+                <button  style="border-radius: 40px;" class="btn m-1" data-bs-toggle="modal" data-bs-target="#addCommande"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg></button>
+
+        
+            </div>
             <div class="btn-group tel-pop" role="group">
             <div class="modal" id="MyModalEditCommande">
               <div class="modal-dialog">
@@ -220,12 +231,12 @@
                   <div class="modal-body">
                        <div class="col-11 ms-4">
                         <label class="form-label" for="formControlDefault">Nom de Commande</label>
-                        <input type="text" id="formControlDefault" class="form-control "  />
+                        <input type="text" id="formControlDefault" class="form-control " v-model="commande.name" />
                         
                         </div>
                         <div class="col-11 ms-4">
                         <label class="form-label" for="formControlDefault">Date De Commande</label>
-                        <input type="date" id="formControlDefault" class="form-control "  />
+                        <input type="date" id="formControlDefault" class="form-control " v-model="commande.date"  />
                         
                         </div>
                   </div>
@@ -312,9 +323,58 @@
       </div>
     </div>
   </div>
+
+              <div class="btn-group tel-pop" role="group">
+            <div class="modal" id="addCommande">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                  <div class="modal-header">
+                    <h3 class="modal-title">
+                      Ajouter une commande
+                    </h3>
+                  </div>
+
+                  <div class="modal-body">
+                       <div class="col-11 ms-4">
+                        <label class="form-label" for="formControlDefault">Nom de Commande</label>
+                        <input type="text" id="formControlDefault" class="form-control " v-model="commande.name" />
+                        
+                        </div>
+                        <div class="col-11 ms-4">
+                        <label class="form-label" for="formControlDefault">Date de commande</label>
+                        <input type="date" id="formControlDefault" class="form-control " v-model="commande.date"   />
+                        
+                        </div>
+                  </div>
+
+                  <div class="modal-footer">
+
+                             
+
+                    <button
+                      class="btn"
+                      style="background-color: #09a5be; color: white"
+                      
+                      @click="onClickAdd"
+                    >
+                      Valider
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 </template>
 
 <script>
+import moment from 'moment'
+moment.locale('fr'); 
 import { useCommandes } from "../plugins/store";
 import { ref, onMounted } from "vue";
 
@@ -324,29 +384,50 @@ export default {
     return {};
   },
   props: {},
-  methods: {},
+  methods: {
+    commandeDate(date) {
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+    }
+  },
   setup() {
-    const { commandes, addCommande, deleteCommande, fetchCommandes } = useCommandes();
-    const commande = ref({ id: null, name: null, description: null });
+    const { commandes, addCommande, updateCommande, deleteCommande, fetchCommandes } = useCommandes();
+    const commande = ref({ id: null, name: null, date: null,status:null });
     const service = ref({ id: null, name: null,price: null,quantity:null });
     const clear = () => {
-      commande.value = { id: null, name: null, description: null };
+      commande.value = { id: null, name: null, date: null };
     };
 
     const onClickAdd = () => {
-      addCommande(commande.value.name, commande.value.description);
+      console.log(commande.value.date)
+      addCommande(commande.value.name, commande.value.date,commande.value.status);
       clear();
     };
+        const onClickUpdate = () => {
 
+           updateCommande(commande.value.id,commande.value.name,commande.value.date,commande.value.status);
+            clear();
+        };
     const onClickDelete = (id) => {
       commande.value.id=id;
       deleteCommande(commande.value.id);
       clear();
     };
-      const fillFieldEdit = (id,name,price,quantity) => {
-         service.value = {id:id,name: name,price:price,quantity:quantity };
+      const fillFieldEditCommande = (id,name,date,status) => {
+         commande.value = {id:id,name: name,date:date,status:status };
         
         };
+      const changeStatus =(id,name,date,checkId)=> {
+         if(document.getElementById(checkId).checked){
+        updateCommande(id,name,date,1);
+        fetchCommandes();
+        }
+        else{
+        updateCommande(id,name,date,0);
+        fetchCommandes();
+            
+         } 
+          clear();
+      };
     const calculTotal = (quantity,price) => {
          service.value = {id:id,name: name,price:price };
         
@@ -360,10 +441,12 @@ export default {
       commandes,
       commande,
        service,
-       fillFieldEdit,
+       fillFieldEditCommande,
        calculTotal,
       onClickAdd,
+      onClickUpdate,
       onClickDelete,
+      changeStatus,
     };
   },
 };

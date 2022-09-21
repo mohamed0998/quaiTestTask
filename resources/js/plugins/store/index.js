@@ -78,18 +78,33 @@ export const useCommandes = () => {
         commandes: [],
     });
 
-    const addCommande = (name,description) => {
-        if (name != null && description != null){
-            api.post('/api/commandes/commande/add', {name:name,description:description})
+    const addCommande = (name,date) => {
+        if (name != null && date != null){
+            api.post('/api/commandes/commande/add', {name:name,date:date})
             .then((response)=>{
-                state.commandes.push({id:response.data.id,name:name,description:description});
+                state.commandes.push({id:response.data.id,name:name,date:date});
             })
             .catch((error)=> {
                 console.error(error);
             })
         }
     };
+    const updateCommande = (id,name,date,status) => {
+        const index = state.commandes.findIndex((el) => el.id === id);
+        if (index >= 0) {
+            state.commandes[index].name=name;
+            state.commandes[index].date=date;
+            state.commandes[index].status=status;
 
+            
+        api.post(`/api/commandes/commande/update/${id}`, { name: name,date:date,status:status })
+            .then((response) => {})
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+    
+};
     const deleteCommande = (id) => {
         const index = state.commandes.findIndex((el) => el.id === id);
         if (index >= 0){
@@ -106,7 +121,15 @@ export const useCommandes = () => {
     const fetchCommandes = () => {
         api.get('/api/commandes/list')
         .then((response) => {
-            state.commandes = response.data.commandes;
+
+            response.data.commandes.forEach((entry) => {
+                if (entry.status==1)
+                entry.status=true
+                else
+                entry.status=false
+              });
+              state.commandes = response.data.commandes; 
+            
         })
         .catch((error) => {
             console.error(error);
@@ -117,8 +140,9 @@ export const useCommandes = () => {
         commandes: computed(() => state.commandes),
 
         addCommande,
+        updateCommande,
         deleteCommande,
-
+ 
         fetchCommandes,
     };
 };
