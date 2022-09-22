@@ -23,8 +23,8 @@ return new class extends Migration
             $table->integer('commande_id')->unsigned();
             $table->foreign('commande_id') ->references('id') ->on('commandes')->onDelete('cascade');
             
-            $table->integer('quantity')->nullable();
-            $table->float('total')->nullable();
+            $table->integer('quantity')->default(0);
+            $table->double('total')->nullable();
 
         });
     }

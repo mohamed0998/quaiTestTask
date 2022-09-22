@@ -20,25 +20,14 @@ class CommandeSeeder extends Seeder
            
     
        $commandes =[
+
         [
-            'reference'=>'Ref1DOU001',
+            'reference'=>'Ref1',
             'name' =>'Commande 1',
             'date'=>'2022-09-01 00:00'
-            
 
         ],
-        [
-            'reference'=>'Ref1DOU002',
-            'name' =>'Commande 2',
-            'date'=>'2022-09-01 00:00'
-
-        ],
-        [
-            'reference'=>'Ref1DOU003',
-            'name' =>'Commande 3',
-            'date'=>'2022-09-01 00:00'
-
-        ],
+     
 
 ];
             foreach ( $commandes as $key =>  $commande) {

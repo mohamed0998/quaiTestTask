@@ -55,20 +55,11 @@ export const useServices = () => {
             });
     };
 
-    const assignCommande = (service_id,commande_id) => {
-        if (service_id != null && commande_id != null ) {
-            api.post('/api/services/service/assignCommande', { service_id: service_id,commande_id:commande_id})
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-    };
     return {
         services: computed(() => state.services),
         addService,
         updateService,
         deleteService,
-        assignCommande,
         fetchServices,
     };
 };
@@ -76,6 +67,7 @@ export const useServices = () => {
 export const useCommandes = () => {
     const state = reactive({
         commandes: [],
+        total: []
     });
 
     const addCommande = (name,date) => {
@@ -117,24 +109,57 @@ export const useCommandes = () => {
             });
         }
     };
+    const updateTotal =(id,quantity,price) => {
+        api.post(`/api/commandesServices/updateTotal/${id}/${quantity}/${price}`)
+        .then((response) => {})
+        .catch((error) => {
+            console.error(error);
+        });
+       
+        
+    }
+    const assignService =(service_id,commande_id) => {
+        api.post('/api/commandesServices/assignService', { service_id: service_id,commande_id:commande_id })
+        .then((response) => {})
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+    
 
     const fetchCommandes = () => {
         api.get('/api/commandes/list')
         .then((response) => {
 
             response.data.commandes.forEach((entry) => {
-                if (entry.status==1)
+                entry.services.forEach((element)=>{
+                    updateTotal(element.pivot.id,element.pivot.quantity,element.price)
+                })
+              if (entry.status==1)
                 entry.status=true
                 else
                 entry.status=false
               });
-              state.commandes = response.data.commandes; 
-            
+
+             state.commandes = response.data.commandes; 
         })
         .catch((error) => {
             console.error(error);
         })
+
+         
     };
+
+    const deleteRelation =(id)=> {
+        api.post(`/api/commandesServices/delete/${id}`)
+        .then((response) => {})
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+
+
+
 
     return {
         commandes: computed(() => state.commandes),
@@ -142,8 +167,10 @@ export const useCommandes = () => {
         addCommande,
         updateCommande,
         deleteCommande,
- 
+        updateTotal,
         fetchCommandes,
+        deleteRelation,
+        assignService
     };
 };
 

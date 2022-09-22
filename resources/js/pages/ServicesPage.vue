@@ -180,7 +180,7 @@ export default {
         };
     },
     setup() {
-        const { services, result, addService, updateService, deleteService, fetchServices, assignTask } = useServices();
+        const { services, result, addService, updateService, deleteService, fetchServices} = useServices();
         const service = ref({ id: null, name: null,price: null });
         const serviceAssign = ref({serviceId: null, taskId:null})
         const clear = () => {
@@ -202,11 +202,6 @@ export default {
             updateService(service.value.id,service.value.name,service.value.price);
             clear();
         };
-        const onClickAssign = () => {
-        assignTask(serviceAssign.value.serviceId,serviceAssign.value.taskId);
-        document.getElementById("taskIds").options.length = 0;
-        
-        };
         const fillFieldEdit = (id,name,price) => {
          service.value = {id:id,name: name,price:price };
         
@@ -225,26 +220,9 @@ export default {
             onClickUpdate,
             onClickDelete,
             fillFieldEdit,
-            onClickAssign
         };
     },
-    methods :{  
-
-        getIdTasks(event)
-        {
-        let service_id = event.target.value
-        if (service_id != null) {
-            this.choseserviceId=true;
-            api.get(`/api/services/service/getTasksIds/${service_id}`)
-            .then((response) => {
-                this.ids = response.data.ids;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-            
-        }
-    },
+    methods :{
     }
 };
 </script>

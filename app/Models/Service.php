@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['reference','name','price','quantity','total'];
+    protected $fillable = ['reference','name','price'];
 
     public function commandes()
     {
@@ -18,6 +18,6 @@ class Service extends Model
             'commande_services',
             'service_id', 
             'commande_id'
-        );
+        )  ->withPivot(['quantity','total']);
     }
 }

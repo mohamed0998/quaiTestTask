@@ -17,7 +17,7 @@ class Commande extends Model
             Service::class,
             'commande_services',
             'commande_id', 
-            'service_id'
-        );
+            'service_id',
+        ) ->withPivot(['id','quantity','total']);
     }
 }
