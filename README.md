@@ -96,3 +96,4 @@ imperative.
 ⁃ It is not mandatory to perform authentication management to connect to
 the interface.
 ```
+https://user-images.githubusercontent.com/90715487/193144459-6afebd15-a711-4e09-8710-2c5995ca9fdb.mp4
