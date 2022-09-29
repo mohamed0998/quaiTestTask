@@ -26,7 +26,7 @@
     npm run dev
 
 ```
-
+```bash
 SPECIFICATIONS
 Brief:
 The company DOUANE EXPRESS wishes to manage from an interface the management of its services
@@ -94,3 +94,4 @@ imperative.
 ⁃ The interface must use bootstrap.
 ⁃ It is not mandatory to perform authentication management to connect to
 the interface.
+```
